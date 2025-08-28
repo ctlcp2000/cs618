@@ -11,6 +11,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "mongodb": "^6.19.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -33,8 +34,8 @@
   },
   "lint-staged": {
     "**/*.{js,jsx}": [
-      "npx prettier --write",
-      "npx eslint --fix"
+      "npx eslint --fix",
+      "npx prettier --write"
     ]
   }
 }
