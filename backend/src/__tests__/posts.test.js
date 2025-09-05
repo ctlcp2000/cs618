@@ -11,6 +11,26 @@ import {
 } from '../services/posts.js'
 import { Post } from '../db/models/post.js'
 
+const samplePosts = [
+  { title: 'Learning Redux', author: 'Daniel Bugl', tags: ['redux'] },
+  { title: 'Learn React Hooks', author: 'Daniel Bugl', tags: ['react'] },
+  {
+    title: 'Full-Stack React Projects',
+    author: 'Daniel Bugl',
+    tags: ['react', 'nodejs'],
+  },
+  { title: 'Guide to TypeScript' },
+]
+let createdSamplePosts = []
+beforeEach(async () => {
+  await Post.deleteMany({})
+  createdSamplePosts = []
+  for (const post of samplePosts) {
+    const createdPost = new Post(post)
+    createdSamplePosts.push(await createdPost.save())
+  }
+})
+
 describe('creating posts', () => {
   test('with all parameters should succeed', async () => {
     const post = {
@@ -50,25 +70,6 @@ describe('creating posts', () => {
   })
 })
 
-const samplePosts = [
-  { title: 'Learning Redux', author: 'Daniel Bugl', tags: ['redux'] },
-  { title: 'Learn React Hooks', author: 'Daniel Bugl', tags: ['react'] },
-  {
-    title: 'Full-Stack React Projects',
-    author: 'Daniel Bugl',
-    tags: ['react', 'nodejs'],
-  },
-  { title: 'Guide to TypeScript' },
-]
-let createdSamplePosts = []
-beforeEach(async () => {
-  await Post.deleteMany({})
-  createdSamplePosts = []
-  for (const post of samplePosts) {
-    const createdPost = new Post(post)
-    createdSamplePosts.push(await createdPost.save())
-  }
-})
 describe('listing posts', () => {
   test('should return all posts', async () => {
     const posts = await listAllPosts()

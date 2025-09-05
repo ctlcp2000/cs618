@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint src",
-    "prepare": "husky install"
+    "lint": "eslint src"
   },
   "dependencies": {
     "mongodb": "^6.19.0",
