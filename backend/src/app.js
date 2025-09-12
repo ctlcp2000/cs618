@@ -1,10 +1,6 @@
 import express from 'express'
-import {
-  postsRoutes,
-  createPost,
-  updatePost,
-  deletePost,
-} from './routes/posts.js'
+import { createPost, updatePost, deletePost } from './services/posts.js'
+import { postsRoutes } from './routes/posts.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 
