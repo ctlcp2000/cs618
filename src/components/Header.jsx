@@ -1,12 +1,24 @@
 import { Link } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
+import { useAuth } from '../contexts/AuthContex.jsx'
 
 export function Header() {
+  const [token, setToken] = useAuth()
+  if (token) {
+    const { sub } = jwtDecode(token)
+    return (
+      <div>
+        Logged in as <b>{sub}</b>
+        <br />
+        <button onClick={() => setToken(null)}>Logout</button>
+      </div>
+    )
+  }
+
   return (
     <div>
       <h1>Welcome To My Blog!</h1>
-      <h2>
-        <Link to='/signup'>Sign Up</Link>
-      </h2>
+      <Link to='/login'>Log In</Link> | <Link to='/signup'>Sign Up</Link>
     </div>
   )
 }
