@@ -1,5 +1,5 @@
 import { login } from '../api/users.js'
-import { useAuth } from '../contexts/AuthContex.jsx'
+import { useAuth } from '../contexts/AuthContext.jsx'
 import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate, Link } from 'react-router-dom'
