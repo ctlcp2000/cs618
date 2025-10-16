@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://supreme-space-waddle-77vgp4r7wwfpq7x-5173.app.github.dev/sitemap.xml

@@ -6,7 +6,6 @@ COPY package-lock.json .
 RUN npm install
 COPY . .
 RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
 
-FROM nginx AS final
-WORKDIR /usr/share/nginx/html
-COPY --from=build /build/dist .
