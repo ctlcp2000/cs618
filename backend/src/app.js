@@ -1,48 +1,31 @@
 import express from 'express'
-import { createPost, updatePost, deletePost } from './services/posts.js'
 import { postsRoutes } from './routes/posts.js'
 import { userRoutes } from './routes/users.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-
+import { createServer } from 'node:http'
+import { Server } from 'socket.io'
+import { handleSocket } from './socket.js'
 const app = express()
-app.use(cors())
 app.use(bodyParser.json())
+app.use(cors())
 postsRoutes(app)
 userRoutes(app)
-
 app.get('/', (req, res) => {
-  res.send('Hello from Express!')
+  res.send('Hello from Express Nodemon!')
 })
-
-app.post('/api/v1/posts', async (req, res) => {
-  try {
-    const post = await createPost(req.body)
-    return res.json(post)
-  } catch (err) {
-    console.error('error creating post', err)
-    return res.status(500).end()
-  }
+const server = createServer(app)
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+  },
 })
-
-app.patch('/api/v1/posts/:id', async (req, res) => {
-  try {
-    const post = await updatePost(req.params.id, req.body)
-    return res.json(post)
-  } catch (err) {
-    console.error('error updating post', err)
-    return res.status(500).end()
-  }
-})
-
-app.delete('/api/v1/posts/:id', async (req, res) => {
-  try {
-    const { deletedCount } = await deletePost(req.params.id)
-    if (deletedCount === 0) return res.sendStatus(404)
-    return res.status(204).end()
-  } catch (err) {
-    console.error('error deleting post', err)
-    return res.status(500).end()
-  }
-})
-export { app }
+handleSocket(io)
+// io.on('connection', (socket) => {
+//   console.log('user connected:', socket.id)
+//   socket.on('disconnect', () => {
+//     console.log('user disconnected:', socket.id)
+//   })
+// })
+export { server as app }
+// export { app }

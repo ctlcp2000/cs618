@@ -1,21 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Blog } from './pages/Blog.jsx'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Signup } from './pages/Signup.jsx'
-import { AuthContextProvider } from './contexts/AuthContext.jsx'
 import { Login } from './pages/Login.jsx'
-
+import { AuthContextProvider } from './contexts/AuthContext.jsx'
+import { io } from 'socket.io-client'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+const socket = io(import.meta.env.VITE_SOCKET_HOST)
 const queryClient = new QueryClient()
-export function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <AuthContextProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </AuthContextProvider>
-    </QueryClientProvider>
-  )
-}
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -30,3 +21,19 @@ const router = createBrowserRouter([
     element: <Login />,
   },
 ])
+socket.on('connect', () => {
+  console.log('connected to socket.io as', socket.id)
+  socket.emit('chat.message', 'hello from client')
+})
+socket.on('connect_error', (err) => {
+  console.error('socket.io connect error:', err)
+})
+export function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthContextProvider>
+        <RouterProvider router={router} />
+      </AuthContextProvider>
+    </QueryClientProvider>
+  )
+}
